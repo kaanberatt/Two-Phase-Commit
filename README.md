@@ -1,11 +1,11 @@
 # Two-Phase Commit (2PC)
 
-Bu proje, **two-phase commit** işlemini temel alarak dağıtık sistemlerde transaction yönetimini örnekler. Sipariş, stok güncellemesi ve ödeme işlemlerini yöneten `Order.API`, `Stock.API` ve `Payment.API` mikroservisleri ile bir transaction yönetimi gerçekleştirilir. 
+Bu proje, **two-phase commit** yapısı ile dağıtık sistemlerde transaction yönetimini örnekler. Sipariş, stok güncellemesi ve ödeme işlemlerini yöneten `Order.API`, `Stock.API` ve `Payment.API` mikroservisleri ile bir transaction yönetimi gerçekleştirilir. 
 
 ## İşlem Akışı
 
 ### 1. Başlangıç:
-- **Kullanıcı:** Bir sipariş oluşturmak için sistemden `PUT Order` isteği yapar.
+- **Kullanıcı:** Bir sipariş oluşturmak için sistemden `Order` isteği yapar.
 - **Coordinator :** Kullanıcının isteğini alır ve tüm süreci yönetmek için global bir transaction oluşturur.
 
 ### 2. Prepare Phase :
@@ -36,9 +36,9 @@ Eğer herhangi bir servis işlemi gerçekleştiremezse veya hata oluşursa, tüm
 İşlemler atomicity (bütünlük), consistency (tutarlılık), isolation (izolasyon) ve durability (kalıcılık) ilkelerine göre yapılır (ACID), bu da sistemi daha güvenilir hale getirir.
 
 ## Dezavantajlar:
-İki aşamalı commit işlemi her aşamada yanıt beklemek zorunda olduğu için gecikmelere sebep olabilir ve performansı olumsuz etkileyebilir. Her adımın tamamlanması beklenir, bu da işlem süresini artırabilir.
+İki aşamalı commit işlemi her aşamada yanıt beklemek zorunda olduğu için gecikmelere sebep olur ve performansı olumsuz etkileyebilir. Her adımın tamamlanması beklenir, bu da işlem süresini arttırır.
 
-Coordinator, tüm işlem akışını yönettiği için eğer bir hata meydana gelirse veya coordinator arızalanırsa işlem başarısız olabilir ve sistemin güvenilirliği zayıflayabilir.
+Coordinator, tüm işlem akışını yönettiği için eğer bir hata meydana gelirse veya coordinator görevini yerine getiremezse işlem başarısız olabilir ve sistemin güvenilirliği zayıflayabilir.
 
 Transaction işlemi boyunca kaynaklar kilitlenmiş durumda kalır. Eğer transaction tamamlanamazsa, kilitlenmiş kaynaklar sistemin diğer işlemleri üzerinde olumsuz etki yaratabilir.
 
